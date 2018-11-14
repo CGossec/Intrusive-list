@@ -19,12 +19,32 @@ void push_front(i_list *list, i_list_node *node)
         return;
     node->prev = list->head;
     node->next = list->head->next;
-    list->head
     list->head->next = node;
-
+    list->size++;
 }
 
 void push_back(i_list *list, i_list_node *node)
 {
+    if (!node || !list)
+        return;
+    node->next = list->head;
+    node->prev = list->head->prev;
+    list->head->prev = node;
+    list->size++;
+}
 
+void remove_node(i_list *list, i_list_node *node)
+{
+    if (!list)
+        return;
+    if (list->size == 0)
+        return;
+    i_list_node *ptr = list->head->next;
+    while (ptr != node && ptr != list->head)
+        ptr = ptr->next;
+    if (ptr == list->head)
+        return;
+    ptr->prev->next = ptr->next;
+    ptr->next->prev = ptr->prev;
+    list->size--;
 }
